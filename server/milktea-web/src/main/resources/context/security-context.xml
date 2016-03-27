@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:component-scan base-package="com.milktea.security" />
+	
+	<security:http pattern="/client/**" use-expressions="true" authentication-manager-ref="customerAuthenticationManager">
+		<security:http-basic />
+		<security:intercept-url method="GET" pattern="/**" access="isAuthenticated()"/>
+		<security:intercept-url method="POST" pattern="/**" access="isAuthenticated()"/>
+	</security:http>
+	
+	<security:http pattern="/shop/**" use-expressions="true" authentication-manager-ref="shopAuthenticationManager" >
+		<security:http-basic />
+		<security:intercept-url method="GET" pattern="/**" access="isAuthenticated()"/>
+		<security:intercept-url method="POST" pattern="/**" access="isAuthenticated()"/>
+	</security:http>
+
+	<security:authentication-manager alias="customerAuthenticationManager">
+		<security:authentication-provider user-service-ref="customerUserServiceImpl" />
+	</security:authentication-manager>
+	
+    <bean id="shopAuthenticationManager" class="org.springframework.security.authentication.ProviderManager">
+    	<constructor-arg>
+	        <list>
+	            <bean class="org.springframework.security.authentication.dao.DaoAuthenticationProvider"
+	                p:userDetailsService-ref="shopUserServiceImpl"/>
+	        </list>
+    	</constructor-arg>
+	</bean>
+
+</beans>

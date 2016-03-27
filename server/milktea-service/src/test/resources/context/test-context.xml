@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	default-autowire="byName"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<import resource="classpath:context/milktea-service-context.xml"/>
+	
+	<context:property-placeholder location="classpath:*.properties"/>
+	
+	<context:component-scan base-package="com.milktea.mock.service" />
+		
+	<beans profile="dev">
+    	<jdbc:embedded-database id="dataSource">
+	        <jdbc:script location="classpath:sql/schema/hsqldb-schema.sql"/>
+    	</jdbc:embedded-database>
+    </beans>
+	
+	<beans profile="sit">
+		<bean id="dataSource" parent="parentDataSource"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource" />
+		
+		<jdbc:initialize-database data-source="dataSource">
+  			<jdbc:script location="classpath:sql/schema/mysql-schema.sql"/>
+		</jdbc:initialize-database>
+	</beans>
+	
+</beans>

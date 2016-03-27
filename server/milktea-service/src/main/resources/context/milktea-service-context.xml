@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+    <import resource="classpath:context/spring-hibernate-common-context.xml"/>
+    <import resource="classpath:context/webchinese-sms-context.xml"/>
+    <import resource="classpath:context/push-notification-context.xml"/>
+    
+    <context:component-scan base-package="com.milktea.service" />
+    <context:component-scan base-package="com.milktea.redeem" />
+    <context:component-scan base-package="com.milktea.purchase" />
+    <context:component-scan base-package="com.milktea.registershop" />
+    
+	<bean id="sessionFactory" parent="parentSessionFactory" 
+	    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" >
+	    <property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<!--
+					<prop key="hibernate.dialect">${db.dialect}</prop> 
+					<prop key="hibernate.hbm2ddl.auto">create</prop>
+				 -->
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="customerDao" parent="parentDao" class="com.milktea.dao.impl.CustomerDaoImpl" />
+	
+	<bean id="mobileAuthDao" parent="parentDao" class="com.milktea.dao.impl.MobileAuthDaoImpl" />
+	
+	<bean id="transactionDetailDao" parent="parentDao" class="com.milktea.dao.impl.TransactionDetailDaoImpl" />
+	
+	<bean id="transactionSummaryDao" parent="parentDao" class="com.milktea.dao.impl.TransactionSummaryDaoImpl" />
+	
+	<bean id="shopDao" parent="parentDao" class="com.milktea.dao.impl.ShopDaoImpl" />
+	
+	<bean id="pushNotificationDao" parent="parentDao" class="com.milktea.dao.impl.PushNotificationDaoImpl" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean id="transactionManager"
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <beans profile="dev,sit">
+		<bean id="customerSmsQuotaService" class="com.milktea.service.sendauthcode.smsquota.CustomerSmsQuotaService">
+			<property name="numberOfSmsAllowedWithinPeriod" value="3" />
+			<property name="periodInMilliSeconds" value="5000" />
+		</bean>
+		
+		<bean id="shopSmsQuotaService" class="com.milktea.service.sendauthcode.smsquota.ShopSmsQuotaService">
+			<property name="numberOfSmsAllowedWithinPeriod" value="3" />
+			<property name="periodInMilliSeconds" value="5000" />
+		</bean>
+	</beans>
+	
+	<beans profile="prod">
+		<bean id="customerSmsQuotaService" class="com.milktea.service.sendauthcode.smsquota.CustomerSmsQuotaService">
+			<property name="numberOfSmsAllowedWithinPeriod" value="3" />
+			<!-- 7 * 24 * 60 * 60 * 1000 -->
+			<property name="periodInMilliSeconds" value="604800000" /> 
+		</bean>
+		
+		<bean id="shopSmsQuotaService" class="com.milktea.service.sendauthcode.smsquota.ShopSmsQuotaService">
+			<property name="numberOfSmsAllowedWithinPeriod" value="3" />
+			<!-- 7 * 24 * 60 * 60 * 1000 -->
+			<property name="periodInMilliSeconds" value="604800000" /> 
+		</bean>
+	</beans>
+</beans>

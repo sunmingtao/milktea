@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		                   http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
+		                   http://www.springframework.org/schema/jee 
+        				   http://www.springframework.org/schema/jee/spring-jee.xsd"
+	default-autowire="byName">
+
+	<beans profile="prod">
+		<bean id="pushNotificationService" class="com.smt.common.baidu.service.pushnotification.impl.BaiduPushNotificationServiceImpl">
+			<property name="apiKey" value="${baidu.pushnotification.apikey}"/>
+			<property name="secretKey" value="${baidu.pushnotification.secretkey}"/>    
+		</bean>
+	</beans>
+	
+	<beans profile="dev, sit">
+		<bean id="pushNotificationService" class="com.smt.common.baidu.service.pushnotification.impl.MockBaiduPushNotificationService" />
+	</beans>
+
+</beans>

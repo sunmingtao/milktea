@@ -1,0 +1,36 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.milktea.common</groupId>
+		<artifactId>milktea-pom</artifactId>
+		<version>0.5</version>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.milktea.client.service</groupId>
+	<artifactId>milktea-webservice-client-common</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.smt.common.spring</groupId>
+			<artifactId>rest-webservice-client-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.milktea.common</groupId>
+			<artifactId>milktea-common</artifactId>
+		</dependency>
+
+		<!-- Unit Testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<!-- Easy mock -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+		</dependency>
+	</dependencies>
+</project>

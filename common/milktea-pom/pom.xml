@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	
+	<parent>
+		<groupId>com.smt.common.maven</groupId>
+		<artifactId>smt-parent-pom</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.milktea.common</groupId>
+	<artifactId>milktea-pom</artifactId>
+	<version>0.5</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<spring.hibernate.common.version>1.0</spring.hibernate.common.version>
+		<webchinese.sms.version>1.0</webchinese.sms.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.milktea.common</groupId>
+				<artifactId>webchinese-sms-service</artifactId>
+				<version>${webchinese.sms.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.smt.common.spring</groupId>
+				<artifactId>spring-hibernate-common</artifactId>
+				<version>${spring.hibernate.common.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.milktea.common</groupId>
+				<artifactId>milktea-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.milktea.service</groupId>
+				<artifactId>milktea-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.milktea.client</groupId>
+				<artifactId>simple-milktea-webservice-client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<modules>
+		<module>../milktea-common</module>
+		<module>../webchinese-sms-service</module>
+		<module>../push-notification</module>
+		<module>../../server/milktea-service</module>
+		<module>../../client/rest-webservice-client-api</module>
+		<module>../../client/milktea-webservice-client-common</module>
+		<module>../../client/simple-rest-webservice-client</module>
+		<module>../../client/simple-milktea-webservice-client</module>
+		<module>../../client/android-rest-webservice-client</module>
+		<module>../../client/android-milktea-webservice-client</module>
+		<module>../../server/milktea-web</module>
+	</modules>
+
+</project>
